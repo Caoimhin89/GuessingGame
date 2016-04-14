@@ -1,11 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class NumberWizard : MonoBehaviour
 {
+
 	int max = 1000;
 	int min = 1;
 	int guess = 500;
+	int guessCap;
+	int numGuess = 0;
+	Boolean gameOver = false;
+
+	NumberWizard ()
+	{
+
+		this.guessCap = calculateGuessCap (max);
+	}
 
 	// Use this for initialization
 	void Start ()
@@ -25,18 +36,37 @@ public class NumberWizard : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
 	{
-		if (Input.GetKeyDown (KeyCode.UpArrow)) {
-			print ("Up arrow pressed.");
-			min = guess;
-			guess = (max + min) / 2;
-			print ("Higher or lower than " + guess + "?");
-		} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
-			print ("Down arrow pressed.");
-			max = guess;
-			guess = (max + min) / 2;
-			print ("Higher or lower than " + guess + "?");
-		} else if (Input.GetKeyDown (KeyCode.Return)) {
-			print ("I won!");
+		if (gameOver == false) {
+			if (Input.GetKeyDown (KeyCode.UpArrow)) {
+				print ("Up arrow pressed.");
+				min = guess;
+				numGuess++;
+				guess = (max + min) / 2;
+				print ("Higher or lower than " + guess + "?");
+			} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
+				print ("Down arrow pressed.");
+				max = guess;
+				numGuess++;
+				guess = (min + max) / 2;
+				print ("Higher or lower than " + guess + "?");
+			} else if (Input.GetKeyDown (KeyCode.Return)) {
+				print ("I won!");
+			} else if (numGuess == guessCap) {
+				print ("Hey, cheater! You have to pick a number in the specified range! I should have guessed your number by now if you were playing fair!");
+				print ("You lose!");
+				numGuess = 0;
+				gameOver = true;
+			}
 		}
+	}
+
+	int calculateGuessCap (int max)
+	{
+		int guesses = 0;
+		while (max > 0) {
+			max /= 2;
+			guesses++;
+		}
+		return guesses;
 	}
 }
