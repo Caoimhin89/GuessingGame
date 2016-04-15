@@ -5,23 +5,30 @@ using System;
 public class NumberWizard : MonoBehaviour
 {
 
-	int max = 1000;
-	int min = 1;
-	int guess = 500;
+	int max;
+	int min;
+	int guess;
 	int guessCap;
-	int numGuess = 0;
-	Boolean gameOver = false;
-
-	NumberWizard ()
-	{
-
-		this.guessCap = calculateGuessCap (max);
-	}
+	int numGuess;
+	Boolean gameOver;
+	
 
 	// Use this for initialization
 	void Start ()
 	{
-		max++;
+		max = 1000;
+		min = 1;
+		guess = 500;
+		guessCap = calculateGuessCap (max);
+		numGuess = 0;
+		gameOver = false;
+		StartGame ();
+		
+	}
+
+	void StartGame ()
+	{
+		print ("===================================================");
 		print ("Welcome to NumberWizard!");
 		print ("Pick a number in your head, but don't tell me!");
 		
@@ -30,7 +37,22 @@ public class NumberWizard : MonoBehaviour
 		
 		print ("Is the number higher or lower than " + guess + "?");
 		print ("Up arrow for higher, down arrow for lower, return for equal.");
-		
+
+		max++;
+	}
+
+	void NextGuess ()
+	{
+		numGuess++;
+		guess = (min + max) / 2;
+		print ("Is the number higher or lower than " + guess + "?");
+		print ("Up arrow for higher, down arrow for lower, return for equal.");
+	}
+
+	void ExposeCheater ()
+	{
+		print ("Hey, cheater! You have to pick a number in the specified range! And no changing your answer!");
+		print ("You lose!");
 	}
 	
 	// Update is called once per frame
@@ -40,20 +62,15 @@ public class NumberWizard : MonoBehaviour
 			if (Input.GetKeyDown (KeyCode.UpArrow)) {
 				print ("Up arrow pressed.");
 				min = guess;
-				numGuess++;
-				guess = (max + min) / 2;
-				print ("Higher or lower than " + guess + "?");
+				NextGuess ();
 			} else if (Input.GetKeyDown (KeyCode.DownArrow)) {
 				print ("Down arrow pressed.");
 				max = guess;
-				numGuess++;
-				guess = (min + max) / 2;
-				print ("Higher or lower than " + guess + "?");
+				NextGuess ();
 			} else if (Input.GetKeyDown (KeyCode.Return)) {
 				print ("I won!");
-			} else if (numGuess == guessCap) {
-				print ("Hey, cheater! You have to pick a number in the specified range! I should have guessed your number by now if you were playing fair!");
-				print ("You lose!");
+			} else if (numGuess == guessCap || guess > max || guess < min) {
+				ExposeCheater ();
 				numGuess = 0;
 				gameOver = true;
 			}
