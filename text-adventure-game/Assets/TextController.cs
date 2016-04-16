@@ -84,6 +84,7 @@ public class TextController : MonoBehaviour
 	
 	}
 
+	#region State handler methods
 	void cell() {
 		text.text = "You are in a prison cell, and you want to escape. There are " + 
 					"some dirty sheets on the bed, a mirror on the wall, and the door " +
@@ -324,4 +325,5 @@ public class TextController : MonoBehaviour
 			myState = States.cell;
 		}
 	}
+	#endregion
 }
