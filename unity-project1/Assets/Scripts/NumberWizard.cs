@@ -35,9 +35,13 @@ public class NumberWizard : MonoBehaviour
 	{
 		numGuess++;
 		maxNumGuesses--;
-		guess = Random.Range (min, max + 1);
+		if(max == 1000) {
+			guess = Random.Range (min + 1, max + 1);
+		} else {
+			guess = Random.Range (min, max);
+		}
 		guessTxt.text = guess.ToString();
-		if(maxNumGuesses = 0) {
+		if(maxNumGuesses == 0) {
 			playerWin = true;
 		}
 	}
@@ -52,7 +56,7 @@ public class NumberWizard : MonoBehaviour
 	}
 
 	public void GuessHigher() {
-		if(guess == max || guess == min) {
+		if(guess == max) {
 			playerWin = false;
 			ExposeCheater ();
 		}
@@ -61,7 +65,7 @@ public class NumberWizard : MonoBehaviour
 	}
 	
 	public void GuessLower() {
-		if(guess == max || guess == min) {
+		if(guess == min) {
 			playerWin = false;
 			ExposeCheater ();
 		}
