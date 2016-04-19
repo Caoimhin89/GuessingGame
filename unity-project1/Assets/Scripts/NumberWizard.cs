@@ -6,11 +6,10 @@ public class NumberWizard : MonoBehaviour
 {
 
 	public Text guessTxt;
+	public Text guessCount;
 	int max;
-	int maxNumGuesses = 5;
 	int min;
 	int guess;
-	int guessCap = 15;
 	int numGuess;
 	bool playerWin = false;
 	
@@ -26,35 +25,34 @@ public class NumberWizard : MonoBehaviour
 		max = 1000;
 		min = 1;
 		guess = Random.Range (min, max + 1);
-		print (guessCap);
 		numGuess = 0;
+		guessCount.text = numGuess.ToString ();
 		guessTxt.text = guess.ToString ();
+		guessTxt.color = Color.white;
 	}
 
 	void NextGuess ()
 	{
+		if(numGuess < 5) {
+			guessCount.color = Color.red;
+		} else {
+			guessCount.color = Color.green;
+		}
 		numGuess++;
-		maxNumGuesses--;
+		guessCount.text = numGuess.ToString();
 		if(max == 1000) {
 			guess = Random.Range (min + 1, max + 1);
 		} else {
 			guess = Random.Range (min, max);
 		}
 		guessTxt.text = guess.ToString();
-		if(maxNumGuesses == 0) {
+		if(numGuess == 6) {
 			playerWin = true;
 		}
 	}
 
 	// Update is called once per frame
-	void Update ()
-	{
-		if (numGuess >= guessCap) {
-			playerWin = false;
-			ExposeCheater ();
-		}
-	}
-
+	
 	public void GuessHigher() {
 		if(guess == max) {
 			playerWin = false;
