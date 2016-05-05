@@ -1,8 +1,8 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/NumberWizard.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="../block-breaker/Assets/Scripts/LevelManager.cs">
     <Files>
-      <File FileName="Assets/Scripts/NumberWizard.cs" Line="41" Column="10" />
+      <File FileName="../block-breaker/Assets/Scripts/LevelManager.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
