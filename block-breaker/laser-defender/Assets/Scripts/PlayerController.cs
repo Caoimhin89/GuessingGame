@@ -23,6 +23,11 @@ public class PlayerController : MonoBehaviour {
 		GameObject beam = (GameObject) Instantiate(projectile, transform.position, Quaternion.identity);
 		beam.rigidbody2D.velocity = new Vector3(0, projectileSpeed, 0);
 	}
+
+	void OnTriggerEnter2D(Collider2D collider) {
+		print ("Ouch!!");
+		Destroy (collider.gameObject);
+	}
 	
 	// Update is called once per frame
 	void Update () {
