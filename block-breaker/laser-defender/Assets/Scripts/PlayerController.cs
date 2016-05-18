@@ -2,6 +2,7 @@
 using System.Collections;
 
 public class PlayerController : MonoBehaviour {
+	public float health = 300f;
 	public float speed = 5.0f;
 	private float minX;
 	private float maxX;
@@ -25,8 +26,15 @@ public class PlayerController : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D collider) {
-		print ("Ouch!!");
-		Destroy (collider.gameObject);
+		Projectile enemyLaser = collider.gameObject.GetComponent<Projectile>();
+		if(collider.gameObject.GetComponent<Projectile>().CompareTag("EnemyLaser")) {
+			print ("Ouch!!");
+			health -= enemyLaser.GetDamage();
+			enemyLaser.Hit();
+			if(health <= 0) {
+				Destroy (gameObject);
+			}
+		}
 	}
 	
 	// Update is called once per frame

@@ -2,7 +2,7 @@
 using System.Collections;
 
 public class EnemyFigher : MonoBehaviour {
-	public float health = 200;
+	public float health = 200f;
 	public GameObject projectile;
 	public float projectileSpeed = 10.0f;
 	public float rateOfFire = 0.2f;
@@ -15,7 +15,7 @@ public class EnemyFigher : MonoBehaviour {
 
 	void OnTriggerEnter2D(Collider2D collider) {
 		Projectile beam = collider.gameObject.GetComponent<Projectile>();
-		if(beam) {
+		if(collider.gameObject.GetComponent<Projectile>().CompareTag("PlayerLaser")) {
 			health -= beam.GetDamage ();
 			beam.Hit ();
 			if(health <= 0) {

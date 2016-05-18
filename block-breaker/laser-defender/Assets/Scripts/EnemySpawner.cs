@@ -6,6 +6,7 @@ public class EnemySpawner : MonoBehaviour {
 	public float speed = 5.5f;
 	public float width = 10.0f;
 	public float height = 5.0f;
+	public float spawnDelay = 0.5f;
 	private float minX;
 	private float maxX;
 	private bool moveRight;
@@ -13,15 +14,22 @@ public class EnemySpawner : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		moveRight = true;
-		foreach(Transform child in transform) {
-			GameObject enemy = (GameObject)Instantiate(enemyPrefab, child.transform.position, Quaternion.identity);
-			enemy.transform.parent = child;
+		float distance = transform.position.z - Camera.main.transform.position.z;
+		Vector3 leftMost = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, distance));
+		Vector3 rightMost = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, distance));
+		minX = leftMost.x;
+		maxX = rightMost.x;
+		SpawnUntilFull ();
+	}
 
-			float distance = transform.position.z - Camera.main.transform.position.z;
-			Vector3 leftMost = Camera.main.ViewportToWorldPoint(new Vector3(0, 0, distance));
-			Vector3 rightMost = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, distance));
-			minX = leftMost.x;
-			maxX = rightMost.x;
+	void SpawnUntilFull() {
+		Transform freePosition = NextFreePosition ();
+		if(freePosition){
+			GameObject enemy = (GameObject)Instantiate(enemyPrefab, freePosition.position, Quaternion.identity);
+			enemy.transform.parent = freePosition;
+		}
+		if(NextFreePosition()){
+			Invoke ("SpawnUntilFull", spawnDelay);
 		}
 	}
 
@@ -45,6 +53,28 @@ public class EnemySpawner : MonoBehaviour {
 					moveRight = true;
 				}
 		}
+		if(AllMembersDead()) {
+			Debug.Log ("Empty Formation!");
+			SpawnUntilFull ();
+		}
 
+	}
+
+	Transform NextFreePosition(){
+		foreach(Transform childPositionGameObject in transform) {
+			if(childPositionGameObject.childCount == 0) {
+				return childPositionGameObject;
+			}
+		}
+		return null;
+	}
+
+	bool AllMembersDead() {
+		foreach(Transform childPositionGameObject in transform) {
+			if(childPositionGameObject.childCount > 0) {
+				return false;
+			}
+		}
+		return true;
 	}
 }
